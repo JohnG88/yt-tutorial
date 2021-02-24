@@ -24,4 +24,3 @@ class Choice(models.Model):
     # Will see how this plays out
     # q = Question(question_text="What's new?", pub_date=timezone.now()) 
 
-    # Checkout min 55 in python django tutorial 2020
