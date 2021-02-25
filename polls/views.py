@@ -1,10 +1,16 @@
+
+
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from .models import Question
 
 # Create your views here.
 
 def index(request):
+    # This line gits questions from recent to oldest
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    # This line joins questions with a , (Do you know the word?, What's new?)
     output = ', '.join(q.question_text for q in latest_question_list)
     return HttpResponse(output)
 
