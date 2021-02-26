@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 from .models import Question
 
@@ -8,12 +8,18 @@ from .models import Question
 def index(request):
     # This line gits questions from recent to oldest
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    # This line joins questions with a , (Do you know the word?, What's new?)
-    output = ', '.join(q.question_text for q in latest_question_list)
-    return HttpResponse(output)
+    
+    context = {'latest_question_list': latest_question_list,}
+    return render(request, 'polls/index.html', context)
 
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+
+    context = {'question': question}
+    return render(request, 'polls/detail.html', context)
 
 def results(request, question_id):
     response = "You're looking at the results of question %s."
